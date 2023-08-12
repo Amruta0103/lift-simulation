@@ -1,0 +1,37 @@
+body {
+  background: #96f0a5;
+}
+#title{
+  margin: 1rem auto;
+  text-align: center;
+}
+#allLevelsDiv{
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2rem;
+  height: 80%;
+  width: 80%;
+  margin: 1rem auto;
+}
+#levelDivMain{
+  border-bottom: 1px solid black;
+  width: 90%;
+  height: 20%;
+  display: flex;
+  margin: auto;
+  justify-content: space-between;
+  position: relative;
+}
+#levelButtons{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+#levelTitle{
+  width: 3rem;
+  height: fit-content;
+  bottom: -0.5rem;
+  right: -3.5rem;
+  position: absolute;
+}
