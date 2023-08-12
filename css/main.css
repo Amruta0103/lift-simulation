@@ -9,14 +9,14 @@ body {
   display: flex;
   flex-direction: column-reverse;
   gap: 2rem;
-  height: 80%;
+  /* height: 80%; */
   width: 80%;
   margin: 1rem auto;
 }
 #levelDivMain{
   border-bottom: 1px solid black;
   width: 90%;
-  height: 20%;
+  height: 5rem;
   display: flex;
   margin: auto;
   justify-content: space-between;
