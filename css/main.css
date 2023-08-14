@@ -5,28 +5,33 @@ body {
   margin: 1rem auto;
   text-align: center;
 }
+#submitBtn {
+  border: 1px solid transparent;
+  border-radius: 2rem;
+  width: 5rem;
+  height: 1.5rem;
+}
+#backBtn {
+  border: 1px solid transparent;
+  border-radius: 2rem;
+  width: 5rem;
+  height: 1.5rem;
+  display:none;
+}
 #allLevelsDiv{
   display: flex;
   flex-direction: column-reverse;
-  gap: 2rem;
-  /* height: 80%; */
   width: 80%;
   margin: 1rem auto;
 }
 #levelDivMain{
   border-bottom: 1px solid black;
   width: 90%;
-  height: 5rem;
+  height: 7rem;
   display: flex;
   margin: auto;
   justify-content: space-between;
   position: relative;
-}
-#levelButtons{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
 }
 #levelTitle{
   width: 3rem;
@@ -34,4 +39,13 @@ body {
   bottom: -0.5rem;
   right: -3.5rem;
   position: absolute;
+}
+#buttonBoard{
+  height: inherit;
+}
+#liftBox{
+  height: 6.5rem;
+  width: 3rem;
+  border: 2px solid black;
+  margin: auto;
 }
