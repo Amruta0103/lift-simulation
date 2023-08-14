@@ -18,34 +18,54 @@ body {
   height: 1.5rem;
   display:none;
 }
+#display{
+  display: block;
+  width: 90%;
+  margin: 2rem;
+  position: relative;
+}
 #allLevelsDiv{
   display: flex;
   flex-direction: column-reverse;
-  width: 80%;
-  margin: 1rem auto;
+  width: 100%;
+  margin: auto;
+  position: relative;
 }
 #levelDivMain{
-  border-bottom: 1px solid black;
-  width: 90%;
-  height: 7rem;
+  /* border-bottom: 1px solid black; */
+  width: 100%;
+  height: 5rem;
   display: flex;
   margin: auto;
   justify-content: space-between;
   position: relative;
+  background-image: linear-gradient(
+    180deg,
+    hsl(131deg 75% 76%) 0%,
+    hsl(130deg 71% 80%) 50%,
+    hsl(130deg 65% 84%) 100%
+  );
 }
 #levelTitle{
   width: 3rem;
   height: fit-content;
-  bottom: -0.5rem;
-  right: -3.5rem;
+  bottom: 0rem;
+  right: 0rem;
   position: absolute;
 }
 #buttonBoard{
   height: inherit;
 }
+#allLiftsDiv{
+  display: flex;
+  position: absolute;
+  bottom: 0rem;
+  margin: auto 7rem auto;
+}
 #liftBox{
-  height: 6.5rem;
-  width: 3rem;
-  border: 2px solid black;
-  margin: auto;
+  height: 4rem;
+  width: 2.5rem;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  margin: 0rem auto;
 }
