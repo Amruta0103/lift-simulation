@@ -1,27 +1,30 @@
 const floorsVal = document.getElementById('floorsVal');
-// const liftsVal = document.getElementById('liftsVal');
+const liftsVal = document.getElementById('liftsVal');
 const submitBtn = document.getElementById('submitBtn');
 const backBtn = document.getElementById('backBtn');
 const display = document.getElementById('display');
 const allLevel = document.getElementById('allLevelsDiv');
 const allLifts = document.getElementById('allLiftsDiv');
-let flVal, lftVal=1;
+let flVal;
+let lftVal;
 let flArr = [];
 let lftArr = [];
-let floorLevel, buttonUp, liftBox;
+let floorLevel, buttonUp, buttonDown, liftBox;
 
 floorsVal.addEventListener('input',(e) => {
-  return flVal = (e.target.value);
+  flVal = (e.target.value);
 })
-
+liftsVal.addEventListener('input',(f) => {
+  lftVal = (f.target.value);
+})
 submitBtn.addEventListener('click',() => {
   for (var i=1; i<= flVal ; i++){
     flArr.push(i);
   }
-  lftVal = 1;
   for (var i=1; i<= lftVal; i++){
     lftArr.push(i);
   }
+
   createFloors(flArr);
   createLifts(lftArr);
   flArr.splice(0, flVal);
@@ -63,10 +66,11 @@ function createFloors(arr){
       moveUp(level);
     }
 
-    let buttonDown = document.createElement('button');
+    buttonDown = document.createElement('button');
     buttonDown.setAttribute("id","buttonDown");
-    buttonDown.textContent = ("Down"+level);
     buttonDown.setAttribute("type","button");
+    buttonDown.addEventListener('click',moveDown(level))
+    buttonDown.textContent = ("Down"+level);
     if(level > 1){
       buttonBoard.appendChild(buttonDown);
     }
@@ -86,6 +90,14 @@ function moveUp(level){
   buttonUp.addEventListener('click',() => {
     console.log("clicked",level);
     liftBox.style.marginBottom = `${(level-1)*5}rem`;
+    liftBox.style.transition = `margin ${(level-1)*2}s`;
+  })
+}
 
+function moveDown(level){
+  buttonDown.addEventListener('click',() => {
+    console.log("clicked",level);
+    liftBox.style.marginBottom = `${(level-1)*5}rem`;
+    liftBox.style.transition = `margin ${(level-1)*2}s`;
   })
 }
