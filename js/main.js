@@ -1,3 +1,4 @@
+const form = document.getElementById('form');
 const floorsVal = document.getElementById('floorsVal');
 const liftsVal = document.getElementById('liftsVal');
 const submitBtn = document.getElementById('submitBtn');
@@ -29,7 +30,7 @@ submitBtn.addEventListener('click',() => {
   createLifts(lftArr);
   flArr.splice(0, flVal);
   lftArr.splice(0,lftVal);
-  submitBtn.style.display = 'none';
+  form.style.display = 'none';
   backBtn.style.display = 'block';
 })
 
@@ -37,8 +38,8 @@ backBtn.addEventListener('click',()=>{
   allLevel.replaceChildren();
   allLifts.replaceChildren();
   backBtn.style.display = 'none';
-  submitBtn.style.display = 'block';
-  lftVal = '';
+  form.style.display = 'block';
+  liftsVal.value = '';
   floorsVal.value = '';
 })
 
@@ -60,7 +61,7 @@ function createFloors(arr){
     buttonUp = document.createElement('button');
     buttonUp.setAttribute("id","buttonUp");
     buttonUp.setAttribute("type","button");
-    buttonUp.textContent = ("Up "+level);
+    buttonUp.textContent = ("Up");
     if(level < flVal){
       buttonBoard.appendChild(buttonUp);
       moveUp(level);
@@ -70,7 +71,7 @@ function createFloors(arr){
     buttonDown.setAttribute("id","buttonDown");
     buttonDown.setAttribute("type","button");
     buttonDown.addEventListener('click',moveDown(level))
-    buttonDown.textContent = ("Down"+level);
+    buttonDown.textContent = ("Down");
     if(level > 1){
       buttonBoard.appendChild(buttonDown);
     }

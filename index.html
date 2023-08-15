@@ -5,29 +5,25 @@
   </head>
   <body>
     <h1 id="title">Lift Simulation</h1>
-    <div>
-      <form>
+    <div id="mainDiv">
+      <form id="form">
         <div>
-          <div>
-            <label>No. of Floors</label>
-            <input id='floorsVal' type="number" placeholder="00" />
-          </div>
-          <div>
-            <label>No. of Lifts</label>
-            <input id='liftsVal' type="number" placeholder="00"/>
-          </div>
-          <div>
-            <button id='submitBtn' type="button">Submit</button>
-            <button id='backBtn' type="button">Back</button>
-          </div>
+          <label>No. of Floors</label>
+          <input id='floorsVal' type="number" placeholder="00" />
         </div>
         <div>
-          <div id="display">
-            <div id="allLevelsDiv"></div>
-            <div id="allLiftsDiv"></div>
-          </div>
+          <label>No. of Lifts</label>
+          <input id='liftsVal' type="number" placeholder="00"/>
+        </div>
+        <div>
+          <button id='submitBtn' type="button">Submit</button>
         </div>
       </form>
+      <div id="display">
+        <button id='backBtn' type="button">Back</button>
+        <div id="allLevelsDiv"></div>
+        <div id="allLiftsDiv"></div>
+      </div>    
     </div>
     <script type="text/javascript" src="./js/main.js"></script>
   </body>

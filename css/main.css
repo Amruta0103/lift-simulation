@@ -5,6 +5,17 @@ body {
   margin: 1rem auto;
   text-align: center;
 }
+#mainDiv{
+  margin: auto;
+}
+#form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  flex-direction: column;
+  margin: 5rem auto;
+}
 #submitBtn {
   border: 1px solid transparent;
   border-radius: 2rem;
@@ -55,6 +66,28 @@ body {
 }
 #buttonBoard{
   height: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#buttonUp{
+  height: 1.5rem;
+  width: 3rem;
+  margin: 0.5rem;
+  background:transparent;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 2px black;
+}
+#buttonDown{
+  height: 1.5rem;
+  width: 3rem;
+  margin: 0.5rem;
+  background:transparent;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 2px black;
 }
 #allLiftsDiv{
   display: flex;
