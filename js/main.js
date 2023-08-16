@@ -10,7 +10,9 @@ let flVal;
 let lftVal;
 let flArr = [];
 let lftArr = [];
-let floorLevel, buttonUp, buttonDown, lift, currentLift, currentFloor;
+let liftArr = [];
+let floorLevel, buttonUp, buttonDown, lift, currentLift;
+let currentFloor = 1;
 // let moves = [
 //   {
 //     liftno: '1',
@@ -38,8 +40,6 @@ submitBtn.addEventListener('click',() => {
 
   createFloors(flArr);
   createLifts(lftArr);
-  flArr.splice(0, flVal);
-  lftArr.splice(0,lftVal);
   form.style.display = 'none';
   backBtn.style.display = 'block';
 })
@@ -49,6 +49,8 @@ backBtn.addEventListener('click',()=>{
   allLifts.replaceChildren();
   backBtn.style.display = 'none';
   form.style.display = 'flex';
+  flArr.splice(0, flVal);
+  lftArr.splice(0,lftVal);
   liftsVal.value = '';
   floorsVal.value = '';
 })
@@ -82,7 +84,7 @@ function createFloors(arr){
     buttonDown = document.createElement('button');
     buttonDown.setAttribute("id","buttonDown");
     buttonDown.setAttribute("type","button");
-    buttonDown.setAttribute("name","Down")
+    buttonDown.setAttribute("name","Down");
     buttonDown.setAttribute("value",`${level +' ' + buttonDown.name}`)
     buttonDown.addEventListener('click',()=>gettingData(level))
     buttonDown.textContent = ("Down");
@@ -94,26 +96,30 @@ function createFloors(arr){
   })
 }
 
-function createLifts(liftArr){
-  liftArr.forEach((l)=>{
+function createLifts(tempArr){
+  tempArr.forEach((l)=>{
     lift = document.createElement('div');
     lift.setAttribute("id","liftBox");
-    lift.setAttribute("free",true);
     lift.textContent = ("Lift "+ l);
     allLifts.appendChild(lift);
   })
 }
 
-function gettingData (currentFloor){
-  console.log("sore wa?",currentFloor)
-  moveLift(currentFloor);
-  // lftArr.map((f)=>{
-    // traverse through then assign val to first in line and check closest lift floor for movement
-  // })
+function gettingData (toFloor){
+  console.log(lftArr);
+  moveLift(toFloor);
+  liftArr.map(x => {
+    x.free = true,
+    x.liftAt = toFloor
+  })
+  console.log(liftArr);
 }
+
 function moveLift(toFloor){
-  liftBox.style.marginBottom = `${(toFloor-1)*5}rem`;
-  liftBox.style.transition = `margin ${(toFloor)*2}s`;
+  setTimeout(()=>{
+  lift.style.marginBottom = `${(toFloor-1)*5}rem`;
+  lift.style.transition = `margin ${(toFloor)*2}s`;
+},1000);
 }
 
 // function moveDown(level){
