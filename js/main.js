@@ -10,14 +10,24 @@ let flVal;
 let lftVal;
 let flArr = [];
 let lftArr = [];
-let floorLevel, buttonUp, buttonDown, liftBox;
+let floorLevel, buttonUp, buttonDown, lift, currentLift, currentFloor;
+// let moves = [
+//   {
+//     liftno: '1',
+//     tofloor: '2',
+//     status: 'free'| 'occupied',
+//   }
+// ]
+// let liftPosition = [];
 
 floorsVal.addEventListener('input',(e) => {
   flVal = (e.target.value);
 })
+
 liftsVal.addEventListener('input',(f) => {
   lftVal = (f.target.value);
 })
+
 submitBtn.addEventListener('click',() => {
   for (var i=1; i<= flVal ; i++){
     flArr.push(i);
@@ -38,7 +48,7 @@ backBtn.addEventListener('click',()=>{
   allLevel.replaceChildren();
   allLifts.replaceChildren();
   backBtn.style.display = 'none';
-  form.style.display = 'block';
+  form.style.display = 'flex';
   liftsVal.value = '';
   floorsVal.value = '';
 })
@@ -61,44 +71,55 @@ function createFloors(arr){
     buttonUp = document.createElement('button');
     buttonUp.setAttribute("id","buttonUp");
     buttonUp.setAttribute("type","button");
+    buttonUp.setAttribute("name","Up")
+    buttonUp.setAttribute("value",`${level +' ' + buttonUp.name}`)
     buttonUp.textContent = ("Up");
+    buttonUp.addEventListener('click',()=>gettingData(level))
     if(level < flVal){
       buttonBoard.appendChild(buttonUp);
-      moveUp(level);
     }
 
     buttonDown = document.createElement('button');
     buttonDown.setAttribute("id","buttonDown");
     buttonDown.setAttribute("type","button");
-    buttonDown.addEventListener('click',moveDown(level))
+    buttonDown.setAttribute("name","Down")
+    buttonDown.setAttribute("value",`${level +' ' + buttonDown.name}`)
+    buttonDown.addEventListener('click',()=>gettingData(level))
     buttonDown.textContent = ("Down");
     if(level > 1){
       buttonBoard.appendChild(buttonDown);
     }
+
+    // gettingData();
   })
 }
 
 function createLifts(liftArr){
-  liftArr.forEach((lift)=>{
-    liftBox = document.createElement('div');
-    liftBox.setAttribute("id","liftBox");
-    liftBox.textContent = ("Lift "+ lift);
-    allLifts.appendChild(liftBox);
+  liftArr.forEach((l)=>{
+    lift = document.createElement('div');
+    lift.setAttribute("id","liftBox");
+    lift.setAttribute("free",true);
+    lift.textContent = ("Lift "+ l);
+    allLifts.appendChild(lift);
   })
 }
 
-function moveUp(level){
-  buttonUp.addEventListener('click',() => {
-    console.log("clicked",level);
-    liftBox.style.marginBottom = `${(level-1)*5}rem`;
-    liftBox.style.transition = `margin ${(level-1)*2}s`;
-  })
+function gettingData (currentFloor){
+  console.log("sore wa?",currentFloor)
+  moveLift(currentFloor);
+  // lftArr.map((f)=>{
+    // traverse through then assign val to first in line and check closest lift floor for movement
+  // })
+}
+function moveLift(toFloor){
+  liftBox.style.marginBottom = `${(toFloor-1)*5}rem`;
+  liftBox.style.transition = `margin ${(toFloor)*2}s`;
 }
 
-function moveDown(level){
-  buttonDown.addEventListener('click',() => {
-    console.log("clicked",level);
-    liftBox.style.marginBottom = `${(level-1)*5}rem`;
-    liftBox.style.transition = `margin ${(level-1)*2}s`;
-  })
-}
+// function moveDown(level){
+//   buttonDown.addEventListener('click',() => {
+//     console.log("clicked",level);
+//     liftBox.style.marginBottom = `${(level-1)*5}rem`;
+//     liftBox.style.transition = `margin ${(level)*2}s`;
+//   })
+// }
