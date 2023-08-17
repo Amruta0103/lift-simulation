@@ -11,8 +11,9 @@ let lftVal;
 let flArr = [];
 let lftArr = [];
 let liftArr = [];
-let floorLevel, buttonUp, buttonDown, lift, currentLift;
-let currentFloor = 1;
+let floorLevel, buttonUp, buttonDown, currentLift;
+let currentFloor;
+let cFlr = 0;
 // let moves = [
 //   {
 //     liftno: '1',
@@ -38,10 +39,21 @@ submitBtn.addEventListener('click',() => {
     lftArr.push(i);
   }
 
+  lftArr.map(x=>{
+    x = {
+      title : x,
+      free : true,
+      currentFloor : 0
+    }
+    liftArr.push(x);
+  })
+  console.log("line 55",liftArr);
+
   createFloors(flArr);
-  createLifts(lftArr);
+  createLifts(liftArr);
   form.style.display = 'none';
   backBtn.style.display = 'block';
+
 })
 
 backBtn.addEventListener('click',()=>{
@@ -98,27 +110,43 @@ function createFloors(arr){
 
 function createLifts(tempArr){
   tempArr.forEach((l)=>{
-    lift = document.createElement('div');
+    let lift = document.createElement('div');
     lift.setAttribute("id","liftBox");
-    lift.textContent = ("Lift "+ l);
+    lift.textContent = ("Lift "+ l.title);
     allLifts.appendChild(lift);
   })
 }
 
 function gettingData (toFloor){
-  console.log(lftArr);
+  // console.log(toFloor);
+  // console.log(lift.style.marginBottom);
   moveLift(toFloor);
-  liftArr.map(x => {
-    x.free = true,
-    x.liftAt = toFloor
-  })
-  console.log(liftArr);
 }
 
 function moveLift(toFloor){
+  liftBox = document.getElementById('liftBox'); 
+  cFlr = parseInt(liftBox.style.marginBottom.slice(0,-3))/5;
+  if(cFlr === NaN){
+    cFlr = 0;
+  }
+  console.log("currentFloor:",cFlr,"  headedTo:",toFloor);
+  let t1 = cFlr - (toFloor*5);
+  t1 = t1/5;
+  if ( t1 < 0){
+    t1 = t1*(-1)
+  }
+  let newTime = (cFlr-toFloor);
+  if(newTime<0){
+    newTime = newTime*(-1)
+  }
+  console.log("time",newTime);
   setTimeout(()=>{
-  lift.style.marginBottom = `${(toFloor-1)*5}rem`;
-  lift.style.transition = `margin ${(toFloor)*2}s`;
+    liftArr.map(x=>x.currentFloor = toFloor);
+    console.log(liftArr);
+    let moveMargin = (toFloor-1)*5;
+    console.log("moveMargin",moveMargin, "timeNow",(moveMargin/5)*2);
+    liftBox.style.marginBottom = `${moveMargin}rem`;
+    liftBox.style.transition = `margin ${newTime*2}s`;
 },1000);
 }
 
