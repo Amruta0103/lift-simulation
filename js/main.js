@@ -14,14 +14,6 @@ let liftArr = [];
 let floorLevel, buttonUp, buttonDown, currentLift;
 let currentFloor;
 let cFlr = 0;
-// let moves = [
-//   {
-//     liftno: '1',
-//     tofloor: '2',
-//     status: 'free'| 'occupied',
-//   }
-// ]
-// let liftPosition = [];
 
 floorsVal.addEventListener('input',(e) => {
   flVal = (e.target.value);
@@ -32,25 +24,29 @@ liftsVal.addEventListener('input',(f) => {
 })
 
 submitBtn.addEventListener('click',() => {
-  for (var i=1; i<= flVal ; i++){
-    flArr.push(i);
-  }
-  for (var i=1; i<= lftVal; i++){
-    lftArr.push(i);
-  }
-
-  lftArr.map(x=>{
-    x = {
-      title : x,
-      free : true,
-      currentFloor : 0
+  for (var i=0; i< flVal ; i++){
+    let j = {
+      flId: i,
+      title: i+1,
     }
-    liftArr.push(x);
-  })
-  console.log("line 55",liftArr);
+    flArr.push(j);
+  }
+  console.log("line 30", flArr);
+
+  for (var i=0; i< lftVal; i++){
+    let j = {
+      lftId:i,
+      title: i+1,
+      free: true,
+      headedFrom : 0,
+      headedTo: 0,
+    }
+    lftArr.push(j);
+  }
+  console.log("line 41",lftArr);
 
   createFloors(flArr);
-  createLifts(liftArr);
+  createLifts(lftArr);
   form.style.display = 'none';
   backBtn.style.display = 'block';
 
@@ -75,7 +71,7 @@ function createFloors(arr){
     
     let levelTitle = document.createElement('div');
     levelTitle.setAttribute("id","levelTitle");
-    levelTitle.textContent = ("Floor "+ level);
+    levelTitle.textContent = ("Floor "+ level.title);
     floorLevel.appendChild(levelTitle);
 
     let buttonBoard = document.createElement('div');
@@ -86,10 +82,10 @@ function createFloors(arr){
     buttonUp.setAttribute("id","buttonUp");
     buttonUp.setAttribute("type","button");
     buttonUp.setAttribute("name","Up")
-    buttonUp.setAttribute("value",`${level +' ' + buttonUp.name}`)
-    buttonUp.textContent = ("Up");
-    buttonUp.addEventListener('click',()=>gettingData(level))
-    if(level < flVal){
+    buttonUp.setAttribute("value",`${level}`)
+    buttonUp.textContent = ("Up"+level.title);
+    buttonUp.addEventListener('click',()=>gettingData(level.title))
+    if(level.title < flVal){
       buttonBoard.appendChild(buttonUp);
     }
 
@@ -97,13 +93,13 @@ function createFloors(arr){
     buttonDown.setAttribute("id","buttonDown");
     buttonDown.setAttribute("type","button");
     buttonDown.setAttribute("name","Down");
-    buttonDown.setAttribute("value",`${level +' ' + buttonDown.name}`)
-    buttonDown.addEventListener('click',()=>gettingData(level))
-    buttonDown.textContent = ("Down");
-    if(level > 1){
+    buttonDown.setAttribute("value",`${level}`)
+    buttonDown.addEventListener('click',()=>gettingData(level.title))
+    buttonDown.textContent = ("Down"+level.title);
+    console.log("maybe",level.flId,"&",flVal,"&",level.title);
+    if(level.flId > 0){
       buttonBoard.appendChild(buttonDown);
     }
-
     // gettingData();
   })
 }
@@ -118,6 +114,7 @@ function createLifts(tempArr){
 }
 
 function gettingData (toFloor){
+  console.log("kaunsa floor",toFloor);
   // console.log(toFloor);
   // console.log(lift.style.marginBottom);
   moveLift(toFloor);
@@ -125,11 +122,19 @@ function gettingData (toFloor){
 
 function moveLift(toFloor){
   liftBox = document.getElementById('liftBox'); 
+  let margin = liftBox.style.marginBottom;
+  if(margin === NaN){
+    margin = 1
+  };
+  lftArr.map(q=>{
+    q.headedFrom = parseInt(liftBox.style.marginBottom.slice(0,-3)/5);
+    q.headedTo = toFloor;
+    console.log("headedFrom:",q.headedFrom,"  headedTo:",toFloor);
+  })
   cFlr = parseInt(liftBox.style.marginBottom.slice(0,-3))/5;
   if(cFlr === NaN){
     cFlr = 0;
   }
-  console.log("currentFloor:",cFlr,"  headedTo:",toFloor);
   let t1 = cFlr - (toFloor*5);
   t1 = t1/5;
   if ( t1 < 0){
@@ -141,14 +146,14 @@ function moveLift(toFloor){
   }
   console.log("time",newTime);
   setTimeout(()=>{
-    liftArr.map(x=>x.currentFloor = toFloor);
-    console.log(liftArr);
     let moveMargin = (toFloor-1)*5;
     console.log("moveMargin",moveMargin, "timeNow",(moveMargin/5)*2);
     liftBox.style.marginBottom = `${moveMargin}rem`;
     liftBox.style.transition = `margin ${newTime*2}s`;
 },1000);
 }
+
+// console.log(flArr,"\n",lftArr,"\n",liftArr);
 
 // function moveDown(level){
 //   buttonDown.addEventListener('click',() => {
