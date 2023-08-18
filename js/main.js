@@ -26,17 +26,15 @@ liftsVal.addEventListener('input',(f) => {
 submitBtn.addEventListener('click',() => {
   for (var i=0; i< flVal ; i++){
     let j = {
-      flId: i,
-      title: i+1,
+      flId: i+1,
     }
     flArr.push(j);
   }
   console.log("line 30", flArr);
 
-  for (var i=0; i< lftVal; i++){
+  for (var i=0; i<lftVal; i++){
     let j = {
-      lftId:i,
-      title: i+1,
+      lftId:i+1,
       free: true,
       headedFrom : 0,
       headedTo: 0,
@@ -71,7 +69,7 @@ function createFloors(arr){
     
     let levelTitle = document.createElement('div');
     levelTitle.setAttribute("id","levelTitle");
-    levelTitle.textContent = ("Floor "+ level.title);
+    levelTitle.textContent = ("Floor "+ level.flId);
     floorLevel.appendChild(levelTitle);
 
     let buttonBoard = document.createElement('div');
@@ -82,10 +80,10 @@ function createFloors(arr){
     buttonUp.setAttribute("id","buttonUp");
     buttonUp.setAttribute("type","button");
     buttonUp.setAttribute("name","Up")
-    buttonUp.setAttribute("value",`${level}`)
-    buttonUp.textContent = ("Up"+level.title);
-    buttonUp.addEventListener('click',()=>gettingData(level.title))
-    if(level.title < flVal){
+    buttonUp.setAttribute("value",`${level.flId}`)
+    buttonUp.addEventListener('click',()=>gettingData(level.flId))
+    buttonUp.textContent = ("Up"+level.flId);
+    if(level.flId < flVal){
       buttonBoard.appendChild(buttonUp);
     }
 
@@ -93,63 +91,52 @@ function createFloors(arr){
     buttonDown.setAttribute("id","buttonDown");
     buttonDown.setAttribute("type","button");
     buttonDown.setAttribute("name","Down");
-    buttonDown.setAttribute("value",`${level}`)
-    buttonDown.addEventListener('click',()=>gettingData(level.title))
-    buttonDown.textContent = ("Down"+level.title);
-    console.log("maybe",level.flId,"&",flVal,"&",level.title);
-    if(level.flId > 0){
+    buttonDown.setAttribute("value",`${level.flId}`)
+    buttonDown.addEventListener('click',()=>gettingData(level.flId))
+    buttonDown.textContent = ("Down"+level.flId);
+    if(level.flId > 1){
       buttonBoard.appendChild(buttonDown);
     }
-    // gettingData();
   })
 }
 
 function createLifts(tempArr){
-  tempArr.forEach((l)=>{
+  tempArr.forEach((lft)=>{
     let lift = document.createElement('div');
     lift.setAttribute("id","liftBox");
-    lift.textContent = ("Lift "+ l.title);
+    lift.textContent = ("Lift "+lft.lftId);
     allLifts.appendChild(lift);
   })
 }
 
 function gettingData (toFloor){
-  console.log("kaunsa floor",toFloor);
-  // console.log(toFloor);
-  // console.log(lift.style.marginBottom);
+  // console.log("kaunsa floor",toFloor);
   moveLift(toFloor);
 }
 
 function moveLift(toFloor){
   liftBox = document.getElementById('liftBox'); 
-  let margin = liftBox.style.marginBottom;
-  if(margin === NaN){
-    margin = 1
-  };
+  let height = parseInt(liftBox.style.height.slice(0,-3));
+  console.log("margin",height)
+  // if(margin === NaN){
+  //   margin = 1
+  // };
+  let time;
   lftArr.map(q=>{
-    q.headedFrom = parseInt(liftBox.style.marginBottom.slice(0,-3)/5);
+    q.headedFrom = height/5;
     q.headedTo = toFloor;
     console.log("headedFrom:",q.headedFrom,"  headedTo:",toFloor);
+    var t1 = (q.headedFrom - q.headedTo);
+    if(t1 < 0){
+      t1=t1*(-1);
+    }
+    time=t1;
   })
-  cFlr = parseInt(liftBox.style.marginBottom.slice(0,-3))/5;
-  if(cFlr === NaN){
-    cFlr = 0;
-  }
-  let t1 = cFlr - (toFloor*5);
-  t1 = t1/5;
-  if ( t1 < 0){
-    t1 = t1*(-1)
-  }
-  let newTime = (cFlr-toFloor);
-  if(newTime<0){
-    newTime = newTime*(-1)
-  }
-  console.log("time",newTime);
   setTimeout(()=>{
-    let moveMargin = (toFloor-1)*5;
-    console.log("moveMargin",moveMargin, "timeNow",(moveMargin/5)*2);
-    liftBox.style.marginBottom = `${moveMargin}rem`;
-    liftBox.style.transition = `margin ${newTime*2}s`;
+    let moveMargin = (toFloor)*5;
+    console.log("moveMargin",moveMargin, "time",(time*2));
+    liftBox.style.height = `${moveMargin}rem`;
+    liftBox.style.transition = `height ${(time)*2}s`;
 },1000);
 }
 
