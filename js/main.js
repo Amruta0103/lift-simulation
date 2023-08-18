@@ -104,7 +104,8 @@ function createFloors(arr){
 function createLifts(tempArr){
   tempArr.forEach((lft)=>{
     let liftBox = document.createElement('div');
-    liftBox.setAttribute("id","liftBox");
+    liftBox.setAttribute("class","liftBox");
+    liftBox.setAttribute("id",`${"liftBox"+lft.lftId}`);
     allLifts.appendChild(liftBox);
     console.log(liftBox.clientHeight/16);  
     
@@ -117,34 +118,29 @@ function createLifts(tempArr){
   
 }
 
-function getData(floorVal) {
-  calledAt.push(floorVal);
-  moveLift(floorVal)
-  // assignLift(calledAt);
+function getData(toFloor) {
+  calledAt.push(toFloor);
+  assignLift(calledAt);
 }
 
 function assignLift(arr){
-  var lift = document.getElementById('lift'); 
-  let height = (lift.clientHeight/16)/5;
+  // let tempId = (`${"lift"+toFloor}`);
+  // console.log("tempId",tempId);
+  // var lift = document.getElementById(`${tempId}`); 
+  // let height = (lift.clientHeight);
+  for(let c=0; c<1; c++){
   lftArr.map(q=>{
     if(q.headedFrom !== arr[0]){
       if(q.free === true){
-        return moveLift(arr[0],q.lftId)
+          console.log(arr[0],q.lftId)
+          moveLift(arr[0],q.lftId)
+        };
       }
-    }
-    // if(q.free == true){
-    //   q.free = false
-    //   // for(w=1; w<=1; w++){
-    //     // if(w === q){
-    //       console.log("q",q.headedFrom,"arr[0]",arr[0]);
-    //       // return moveLift(arr[0],q.lftId);
-    //     // }
-    //   // }
-    // }
-    else{
-      console.log("else mein:-",q,"&","arr[0]",arr[0]);
-    }
-  })
+      else{
+        console.log("else mein:-",q,"&","arr[0]",arr[0]);
+      }
+    })
+  }
 }
 
 // function calledAtFloor(floor){
@@ -165,25 +161,32 @@ function assignLift(arr){
 //   moveLift(floor);
 // }
 
-function moveLift(toFloor){ 
-  var liftBox = document.getElementById('liftBox');
-  let height = (liftBox.clientHeight/16);
-  console.log("height",height);
+function moveLift(toFloor,lftId){ 
+  let tempId = `${'liftBox'+lftId}`;
+  var liftBox = document.getElementById(tempId);
+  console.log("clientHeight",(liftBox.clientHeight/16)/5);
+  let height = (liftBox.clientHeight/16)/5;
+  console.log("height",height,"manjil",toFloor);
   let time;
   lftArr.map(q=>{
-    q.headedFrom = height/5;
-    q.headedTo = toFloor;
-    console.log("headedFrom:",q.headedFrom,"  headedTo:",toFloor);
-    var t1 = (q.headedFrom - q.headedTo);
-    if(t1 < 0){
-      t1=t1*(-1);
+    if(toFloor === q.headedFrom){
+      console.log("lift hai yaha, iss floor pe -> ",toFloor)
+    }else{
+      console.log("lift bulwao bhai yaha",toFloor);
     }
-    time=t1;
+      q.headedFrom = height;
+      q.headedTo = toFloor;
+      console.log("headedFrom:",q.headedFrom,"  headedTo:",toFloor);
+      var t1 = (q.headedFrom - q.headedTo);
+      if(t1 < 0){
+        t1=t1*(-1);
+      }
+      time=t1;
+      setTimeout(()=>{
+        let moveMargin = (toFloor)*5;
+        console.log("moveMargin",moveMargin, "time",(time*2));
+        liftBox.style.height = `${moveMargin}rem`;
+        liftBox.style.transition = `height ${(time)*2}s linear`;
+      },1000);
   })
-  setTimeout(()=>{
-    let moveMargin = (toFloor)*5;
-    console.log("moveMargin",moveMargin, "time",(time*2));
-    liftBox.style.height = `${moveMargin}rem`;
-    liftBox.style.transition = `height ${(time)*2}s linear`;
-  },1000);
 }
