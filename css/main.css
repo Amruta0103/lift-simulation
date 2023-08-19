@@ -94,6 +94,7 @@ body {
   position: absolute;
   bottom: 0rem;
   margin: 0rem 5rem;
+  align-items: end;
 }
 .liftBox{
   height: 5rem;

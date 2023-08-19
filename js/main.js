@@ -12,6 +12,7 @@ let lftVal;
 let flArr = [];
 let lftArr = [];
 let calledAt = [];
+let wipLift = [];
 let floorLevel, buttonUp, buttonDown, currentLift;
 let currentFloor;
 let cFlr = 0;
@@ -46,6 +47,7 @@ submitBtn.addEventListener('click',() => {
 
   createFloors(flArr);
   createLifts(lftArr);
+  allLifts.style.height = `${5*flVal}rem`;
   form.style.display = 'none';
   backBtn.style.display = 'block';
 })
@@ -106,8 +108,7 @@ function createLifts(tempArr){
     let liftBox = document.createElement('div');
     liftBox.setAttribute("class","liftBox");
     liftBox.setAttribute("id",`${"liftBox"+lft.lftId}`);
-    allLifts.appendChild(liftBox);
-    console.log(liftBox.clientHeight/16);  
+    allLifts.appendChild(liftBox); 
     
     let lift = document.createElement('div');
     lift.setAttribute("class","lift");
@@ -119,74 +120,48 @@ function createLifts(tempArr){
 }
 
 function getData(toFloor) {
-  calledAt.push(toFloor);
+  calledAt.splice(0,calledAt.length);
+  if(calledAt.length === 0){
+    calledAt.push(toFloor);
+  }
+  console.log("calledAt",calledAt);
   assignLift(calledAt);
 }
 
 function assignLift(arr){
-  // let tempId = (`${"lift"+toFloor}`);
-  // console.log("tempId",tempId);
-  // var lift = document.getElementById(`${tempId}`); 
-  // let height = (lift.clientHeight);
-  for(let c=0; c<1; c++){
-  lftArr.map(q=>{
-    if(q.headedFrom !== arr[0]){
-      if(q.free === true){
-          console.log(arr[0],q.lftId)
-          moveLift(arr[0],q.lftId)
-        };
-      }
-      else{
-        console.log("else mein:-",q,"&","arr[0]",arr[0]);
-      }
-    })
-  }
+  wipLift.push(lftArr[0]);
+  console.log("ye dekh lo pehle",wipLift[0]);
+  // if(wipLift[0].free !== true){
+  //   wipLift.pop();
+  //   console.log(wipLift);
+  // }else{
+    for(w=0;w<1; w++){
+      wipLift[0].free = false;
+      wipLift[0].headedTo = arr[0];
+      moveLift(arr[0],wipLift[0]);
+      wipLift.shift();
+    }
+  // }
 }
 
-// function calledAtFloor(floor){
-//   console.log(lftArr);
-//   var liftBox = document.getElementById('liftBox'); 
-//   let height = (liftBox.clientHeight/16)/5;
-//   lftArr.map(z => {
-//     if( height === z.lftId === floor){
-//       // console.log("matching id's :",z.lftId,"&",floor)
-//       if(z.free === true){
-//         for (var a=0; a<1; a++){
-//           return z.free = false;
-//         }
-//         console.log(z.free);
-//       }
-//     }
-//   })
-//   moveLift(floor);
-// }
-
-function moveLift(toFloor,lftId){ 
-  let tempId = `${'liftBox'+lftId}`;
+function moveLift(toFloor,lft){ 
+  let tempId = `${'liftBox'+lft.lftId}`;
+  console.log(tempId);
   var liftBox = document.getElementById(tempId);
-  console.log("clientHeight",(liftBox.clientHeight/16)/5);
   let height = (liftBox.clientHeight/16)/5;
-  console.log("height",height,"manjil",toFloor);
   let time;
-  lftArr.map(q=>{
-    if(toFloor === q.headedFrom){
-      console.log("lift hai yaha, iss floor pe -> ",toFloor)
-    }else{
-      console.log("lift bulwao bhai yaha",toFloor);
+    console.log("lift bulwao bhai yaha",toFloor);
+    lft.headedFrom = height;
+    lft.headedTo = toFloor;
+    console.log("headedFrom:",lft.headedFrom,"  headedTo:",toFloor);
+    var t1 = (lft.headedFrom - lft.headedTo);
+    if(t1 < 0){
+      t1=t1*(-1);
     }
-      q.headedFrom = height;
-      q.headedTo = toFloor;
-      console.log("headedFrom:",q.headedFrom,"  headedTo:",toFloor);
-      var t1 = (q.headedFrom - q.headedTo);
-      if(t1 < 0){
-        t1=t1*(-1);
-      }
-      time=t1;
-      setTimeout(()=>{
-        let moveMargin = (toFloor)*5;
-        console.log("moveMargin",moveMargin, "time",(time*2));
-        liftBox.style.height = `${moveMargin}rem`;
-        liftBox.style.transition = `height ${(time)*2}s linear`;
-      },1000);
-  })
+    time=t1;
+    setTimeout(()=>{
+      let moveMargin = (toFloor)*5;
+      liftBox.style.height = `${moveMargin}rem`;
+      liftBox.style.transition = `height ${(time)*2}s linear`;
+    },1000);
 }
