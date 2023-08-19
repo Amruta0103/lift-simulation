@@ -113,8 +113,13 @@ function createLifts(tempArr){
     let lift = document.createElement('div');
     lift.setAttribute("class","lift");
     lift.setAttribute("id",`${"lift"+lft.lftId}`);
-    lift.textContent = ("Lift "+lft.lftId);
     liftBox.appendChild(lift);
+    
+    let liftDoor = document.createElement('div');
+    liftDoor.setAttribute("class","liftDoor");
+    liftDoor.setAttribute("id",`${"liftDoor"+lft.lftId}`);
+    liftDoor.innerText = ("Lift "+lft.lftId);
+    lift.appendChild(liftDoor);
   })
   
 }
@@ -129,39 +134,35 @@ function getData(toFloor) {
 }
 
 function assignLift(arr){
-  wipLift.push(lftArr[0]);
-  console.log("ye dekh lo pehle",wipLift[0]);
-  // if(wipLift[0].free !== true){
-  //   wipLift.pop();
-  //   console.log(wipLift);
-  // }else{
-    for(w=0;w<1; w++){
-      wipLift[0].free = false;
-      wipLift[0].headedTo = arr[0];
-      moveLift(arr[0],wipLift[0]);
-      wipLift.shift();
-    }
-  // }
-}
-
-function moveLift(toFloor,lft){ 
-  let tempId = `${'liftBox'+lft.lftId}`;
-  console.log(tempId);
-  var liftBox = document.getElementById(tempId);
+  wipLift.push(lftArr);
+  var currentLift = wipLift[0][0]; 
+  let liftBoxId = `${'liftBox'+currentLift.lftId}`;
+  let liftDoorId = `${'liftDoor'+currentLift.lftId}`;
+  var liftBox = document.getElementById(liftBoxId);
+  var liftDoor = document.getElementById(liftDoorId);
   let height = (liftBox.clientHeight/16)/5;
-  let time;
-    console.log("lift bulwao bhai yaha",toFloor);
-    lft.headedFrom = height;
-    lft.headedTo = toFloor;
-    console.log("headedFrom:",lft.headedFrom,"  headedTo:",toFloor);
-    var t1 = (lft.headedFrom - lft.headedTo);
-    if(t1 < 0){
-      t1=t1*(-1);
-    }
-    time=t1;
-    setTimeout(()=>{
-      let moveMargin = (toFloor)*5;
-      liftBox.style.height = `${moveMargin}rem`;
-      liftBox.style.transition = `height ${(time)*2}s linear`;
-    },1000);
+  currentLift.free = false;
+  currentLift.headedTo = arr[0];
+  currentLift.headedFrom = height;
+  var t1 = (currentLift.headedFrom - currentLift.headedTo);
+  if(t1 < 0){
+    t1=t1*(-1);
+  }
+  time=t1;
+  console.log("door width",liftDoor.clientWidth/16);
+  if(liftDoor.clientWidth/16 > 0){
+    console.log("door is closed");
+    liftDoor.style.width = `${0.5}rem`;
+    liftDoor.style.transition = `width 1s ease 1s`;
+      console.log("door is open");
+      liftDoor.style.width = `${2.5}rem`;
+      liftDoor.style.transition = `width 1s ease 1s`;
+  }
+  setTimeout(()=>{
+    let moveMargin = (arr[0])*5;
+    liftBox.style.height = `${moveMargin}rem`;
+    liftBox.style.transition = `height ${(time)*2}s linear`;
+  },2000);
+  wipLift[0].shift()
+  console.log(wipLift[0]);
 }

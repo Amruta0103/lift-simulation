@@ -111,3 +111,13 @@ body {
   border: 0.5px solid black;
   border-radius: 0.5rem;
 }
+.liftDoor {
+  height: 4rem;
+  width: 2.5rem;
+  min-width: 0.5rem;
+  background: #bac;
+  border-radius: 0.5rem;
+  color: white;
+  /* transform: translateX(-50%);
+    background: linear-gradient(to right, #a12626 0%, #550bec 100%) no-repeat; */
+}
