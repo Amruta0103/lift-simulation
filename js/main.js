@@ -40,7 +40,7 @@ submitBtn.addEventListener('click',() => {
     let j = {
       lftId:i+1,
       free: true,
-      headedFrom : 0,
+      liftAt : 0,
       headedTo: 0,
     }
     lftArr.push(j);
@@ -127,11 +127,13 @@ function createLifts(tempArr){
 }
 
 function getData(toFloor) {
+  console.log("1");
   calledAt = toFloor;
   assignLift(calledAt);
 }
 
 function assignLift(toFloor){
+  console.log("2");
   wipLift.push(lftArr);
   var currentLift = wipLift[0][0];
   let liftBoxId = `${'liftBox'+currentLift.lftId}`;
@@ -141,41 +143,52 @@ function assignLift(toFloor){
   let height = (liftBox.clientHeight/16)/5;
   let width = (liftDoor.clientWidth/16);
 
-  for( let c=0; c<1; c++){
-    wipLift[0].forEach(x=>{
-      if(x.headedFrom == toFloor){
-        console.log("line 147",x)
-      }else{
-        console.log("lift is here, don't need new one")
-        currentLift.free = false;
-        currentLift.headedTo = toFloor;
-        currentLift.headedFrom = height;
-        console.log("currentLift.headedFrom",currentLift.headedFrom,"currentLift.headedTo",currentLift.headedTo)
-        var t1 = (currentLift.headedFrom - currentLift.headedTo);
-        if(t1 < 0){
-          t1=t1*(-1);
-        }
-        time=t1;
-      }
-    })
+  let liftExists = console.log(wipLift[0].some((x)=>x.liftAt === toFloor));
+  if(liftExists === true){
+    console.log("3");
+    console.log("toFloor",toFloor)
+    console.log("line 147",liftExists);
+    // return doorMovement(width,liftDoor);
+  }else{
+    console.log("4");
+    console.log("else of line 149");
+    setLiftData()
+  } 
+  
+  function setLiftData(){
+    console.log("5", currentLift.free);
+    currentLift.free = false;
+    currentLift.headedTo = toFloor;
+    currentLift.liftAt = height;
+    var t1 = (currentLift.liftAt - currentLift.headedTo);
+    if(t1 < 0){
+      t1=t1*(-1);
+    }
+    time=t1;
+    console.log("5.2", currentLift.free);
   }
 
   doorMovement(width,liftDoor)
   
   setTimeout(()=>{
+    console.log("6");
     if(currentLift.free === false){
       let moveMargin = (toFloor)*5;
       liftBox.style.height = `${moveMargin}rem`;
       liftBox.style.transition = `height ${(time)*2}s linear`;
       reachedLift.push(wipLift[0][0]);
       wipLift[0].shift();
+      console.log("line 180", reachedLift[0]);
     }
     setTimeout(()=>{
+      console.log("7");
       doorMovement(width,liftDoor);
     },time*2*1000);
     setTimeout(()=>{
+      console.log("8");
       reachedLift[0].free = true;
-      reachedLift[0].headedFrom = currentLift.headedTo;
+      reachedLift[0].liftAt = currentLift.headedTo;
+      reachedLift[0].headedTo = 0;
       wipLift[0].push(reachedLift[0]);
       reachedLift.shift();
       console.log("mai yaha hu yaha hu yaha hu yaha",wipLift[0])
@@ -185,17 +198,18 @@ function assignLift(toFloor){
 }
 
 function doorMovement(width,door){
+  console.log("9");
   setTimeout(()=>{
     if(width > 0.5){
       door.style.width = width = `${0.5}rem`;
       door.style.transition = `width 2.5s ease`;
       width = width.slice(0,-3);
-      console.log("open door ki width", width);
+      // console.log("open door ki width", width);
       return width;
     }
   },1000)
   setTimeout(()=>{
-    console.log("door width two",width);
+    // console.log("door width two",width);
     if(width = 0.5){
       door.style.width = width = `${2.5}rem`;
       door.style.transition = `width 2.5s ease`;
