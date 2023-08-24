@@ -40,7 +40,7 @@ submitBtn.addEventListener('click',() => {
     let j = {
       lftId:i+1,
       free: true,
-      liftAt : 0,
+      liftAt : 1,
       headedTo: 0,
     }
     lftArr.push(j);
@@ -62,6 +62,7 @@ backBtn.addEventListener('click',()=>{
   flArr.splice(0, flVal);
   lftArr.splice(0,lftVal);
   calledAt.splice(0,calledAt.length);
+  wipLift.splice(0,wipLift.length);
   liftsVal.value = '';
   floorsVal.value = '';
 })
@@ -128,63 +129,61 @@ function createLifts(tempArr){
 
 function getData(toFloor) {
   calledAt.push(toFloor);
-  assignLift(calledAt);
+  console.log(calledAt);
+  managingArrays(calledAt);
 }
 
-function assignLift(toFloor){
-  console.log("ye dekho bhai!", lftArr);
-  let currentLift = lftArr[0];
+function managingArrays(calledAt){
+  let available = lftArr.find(lift => lift.free === true)
+  wipLift.push(available);
+  console.log("line of making WIPLIFT",wipLift);
+  // let liftExists = lftArr.find(lift => lift.headedTo === calledAt[0]);
+  // if(liftExists === false){
+  // console.log("line 141:- lift hai yaha pe")
+  // }
+  console.log("finding ids wipLift",wipLift.indexOf(available))
+  assignLift(available,calledAt[0]);
+  calledAt.shift();
+}
+
+function assignLift(lift,toFloor){
+  console.log("ye dekho bhai!", wipLift);
+  let currentLift = lift;
   let liftBoxId = `${'liftBox'+currentLift.lftId}`;
-  let liftDoorId = `${'liftDoor'+currentLift.lftId}`;
   var liftBox = document.getElementById(liftBoxId);
-  var liftDoor = document.getElementById(liftDoorId);
   let height = (liftBox.clientHeight/16)/5;
-  let width = (liftDoor.clientWidth/16);
-
-  function setLiftData(toFloor){
-    console.log("5", currentLift.free);
-    currentLift.free = false;
-    currentLift.headedTo = toFloor;
-    currentLift.liftAt = height;
-    var t1 = (currentLift.liftAt - currentLift.headedTo);
-    if(t1 < 0){
-      t1=t1*(-1);
-    }
-    time=t1;
-    console.log("5.2", currentLift.free);
-    if(currentLift.free === false){
-      doorMovement(width,liftDoor);    
-      setTimeout(()=>{
-        let moveMargin = (toFloor)*5;
-        liftBox.style.height = `${moveMargin}rem`;
-        liftBox.style.transition = `height ${(time)*2}s linear`;
-        reachedLift.push(wipLift[0]);
-        wipLift.shift();
-        console.log("line 180", wipLift);
-        setTimeout(()=>{
-          doorMovement(width,liftDoor);
-        },time*2*1000);
-      },3500);
-      setTimeout(()=>{
-        reachedLift[0].free = true;
-        reachedLift[0].liftAt = currentLift.headedTo;
-        reachedLift[0].headedTo = 0;
-        wipLift.push(reachedLift[0]);
-        reachedLift.shift();
-        console.log("mai yaha hu yaha hu yaha hu yaha",wipLift)
-      },time*2*1000 + 1000)
-    }
-  }
   
-  let liftExists = console.log(wipLift.some((x)=>x.liftAt === toFloor));
-  if(liftExists === true){
-    console.log("152, toFloor",toFloor)
-    console.log("line 147",liftExists);
-  }else{
-    console.log("157, toFloor",toFloor)
-    setLiftData(toFloor[0])
+  currentLift.free = false;
+  currentLift.headedTo = toFloor;
+  currentLift.liftAt = height;
+  var t1 = (currentLift.liftAt - currentLift.headedTo);
+  if(t1 < 0){
+    t1=t1*(-1);
   }
+  time=t1;
+  console.log("after chnages to lift Data:",currentLift);
+  
+  let liftDoorId = `${'liftDoor'+currentLift.lftId}`;
+  var liftDoor = document.getElementById(liftDoorId);
+  let width = (liftDoor.clientWidth/16);
+  
+  doorMovement(width,liftDoor); 
+  console.log("free status after door movement",currentLift.free);
 
+  if(currentLift.free === false){
+    setTimeout(()=>{
+      let moveMargin = (toFloor)*5;
+      liftBox.style.height = `${moveMargin}rem`;
+      liftBox.style.transition = `height ${(time)*2}s linear`;
+      setTimeout(()=>{
+        doorMovement(width,liftDoor);
+        lift.free = true;
+        lift.liftAt = currentLift.headedTo;
+        lift.headedTo = 0;
+        console.log("lift data on reaching destination",lift);
+      },time*2*1000);
+    },3500);
+  }   
 }
 
 function doorMovement(width,door){
@@ -193,17 +192,15 @@ function doorMovement(width,door){
       door.style.width = width = `${0.5}rem`;
       door.style.transition = `width 2.5s ease`;
       width = width.slice(0,-3);
-      // console.log("open door ki width", width);
       return width;
     }
   },1000)
   setTimeout(()=>{
-    // console.log("door width two",width);
     if(width = 0.5){
       door.style.width = width = `${2.5}rem`;
       door.style.transition = `width 2.5s ease`;
       width = width.slice(0,-3);
       return width;
     }
-  },1500)
+  },2500)
 }
