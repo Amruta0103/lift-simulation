@@ -34,7 +34,6 @@ submitBtn.addEventListener('click',() => {
     }
     flArr.push(j);
   }
-  console.log("line 30", flArr);
 
   for (var i=0; i<lftVal; i++){
     let j = {
@@ -44,8 +43,7 @@ submitBtn.addEventListener('click',() => {
       headedTo: 1,
     }
     lftArr.push(j);
-  }
-  console.log("line 41",lftArr);
+  } 
 
   createFloors(flArr);
   createLifts(lftArr);
@@ -121,8 +119,8 @@ function createLifts(tempArr){
     let liftDoor = document.createElement('div');
     liftDoor.setAttribute("class","liftDoor");
     liftDoor.setAttribute("id",`${"liftDoor"+lft.lftId}`);
-    liftDoor.innerText = ("Lift "+lft.lftId);
     lift.appendChild(liftDoor);
+
   })
   
 }
@@ -133,17 +131,19 @@ function getData(toFloor) {
 }
 
 function managingArrays(calledAt){
-  let liftIsHere = lftArr.find(lift => lift.liftAt === calledAt[0]);
-  console.log("liftIsHere :: ",liftIsHere);
+  wipLift.push(lftArr)
+  let available = wipLift[0].filter(lift=> lift.free === true);
+  let liftIsHere = available.find(lift => lift.liftAt === calledAt[0]);
   if(liftIsHere){
-    alert("Lift exists at the floor");
-  }else{
-    assignLift(lftArr[0],calledAt[0]);
+    console.log("Lift exists at the floor",liftIsHere);
   }
-  // let temp = liftIsHere.find(lift => lift.liftAt === calledAt[0])
-  // if(temp){
-  //   console.log("number ek",temp);
-  // }
+  let nearestLift = nearestLiftFunc(available,calledAt[0]);
+  if(nearestLift){
+    nearestLift.free = false;
+    nearestLift.headedTo = calledAt[0];
+    assignLift(nearestLift,calledAt[0]);
+    calledAt.shift();
+  }
 }
       
 function assignLift(lift,toFloor){
@@ -157,15 +157,13 @@ function assignLift(lift,toFloor){
   if(t1 < 0){
     t1=t1*(-1);
   }
-  time=t1;
-  console.log("after chnages to lift Data:",currentLift);
+  time=t1; 
   
   let liftDoorId = `${'liftDoor'+currentLift.lftId}`;
   var liftDoor = document.getElementById(liftDoorId);
   let width = (liftDoor.clientWidth/16);
   
   doorMovement(width,liftDoor); 
-  console.log("free status after door movement",currentLift.free);
   
   if(currentLift.free === false){
     setTimeout(()=>{
@@ -177,12 +175,9 @@ function assignLift(lift,toFloor){
         lift.free = true;
         lift.liftAt = currentLift.headedTo;
         lift.headedTo = 0;
-        console.log("lift data on reaching destination",lift);
-        // calledAt.shift();
-        // wipLift.shift();
-        // console.log("finally wiplIft aisa hai",wipLift)
+        wipLift.shift();
       },time*2*1000);
-    },3500);
+    },4000);
   }   
 }
 
@@ -203,4 +198,19 @@ function doorMovement(width,door){
       return width;
     }
   },2500)
+}
+
+function nearestLiftFunc(arr, calledAt){
+  let nearest = arr[0];
+  let minDiff = Math.abs(calledAt - nearest.liftAt);
+
+  for( let i=1; i< arr.length; i++){
+    let current = arr[i];
+    let currentDif = Math.abs(calledAt - current.liftAt);
+    if(currentDif < minDiff){
+      nearest = current;
+      minDiff = currentDif;
+    }
+  }
+  return nearest;
 }

@@ -1,12 +1,20 @@
 body {
   background: #96f0a5;
 }
+#App{
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 #title{
   margin: 1rem auto;
   text-align: center;
 }
 #mainDiv{
   margin: auto;
+  width: 100%;
 }
 #form{
   display: flex;
@@ -14,7 +22,7 @@ body {
   align-items: center;
   gap: 2rem;
   flex-direction: column;
-  margin: 5rem auto;
+  margin: auto;
 }
 #submitBtn {
   border: 1px solid transparent;
@@ -43,7 +51,6 @@ body {
   position: relative;
 }
 #levelDivMain{
-  /* border-bottom: 1px solid black; */
   width: 100%;
   height: 5rem;
   display: flex;
@@ -118,4 +125,5 @@ body {
   background: #bac;
   border-radius: 0.5rem;
   color: white;
+  position: relative;
 }
