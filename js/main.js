@@ -41,7 +41,7 @@ submitBtn.addEventListener('click',() => {
       lftId:i+1,
       free: true,
       liftAt : 1,
-      headedTo: 0,
+      headedTo: 1,
     }
     lftArr.push(j);
   }
@@ -129,32 +129,29 @@ function createLifts(tempArr){
 
 function getData(toFloor) {
   calledAt.push(toFloor);
-  console.log(calledAt);
   managingArrays(calledAt);
 }
 
 function managingArrays(calledAt){
-  let available = lftArr.find(lift => lift.free === true)
-  wipLift.push(available);
-  console.log("line of making WIPLIFT",wipLift);
-  // let liftExists = lftArr.find(lift => lift.headedTo === calledAt[0]);
-  // if(liftExists === false){
-  // console.log("line 141:- lift hai yaha pe")
+  let liftIsHere = lftArr.find(lift => lift.liftAt === calledAt[0]);
+  console.log("liftIsHere :: ",liftIsHere);
+  if(liftIsHere){
+    alert("Lift exists at the floor");
+  }else{
+    assignLift(lftArr[0],calledAt[0]);
+  }
+  // let temp = liftIsHere.find(lift => lift.liftAt === calledAt[0])
+  // if(temp){
+  //   console.log("number ek",temp);
   // }
-  console.log("finding ids wipLift",wipLift.indexOf(available))
-  assignLift(available,calledAt[0]);
-  calledAt.shift();
 }
-
+      
 function assignLift(lift,toFloor){
-  console.log("ye dekho bhai!", wipLift);
   let currentLift = lift;
   let liftBoxId = `${'liftBox'+currentLift.lftId}`;
   var liftBox = document.getElementById(liftBoxId);
   let height = (liftBox.clientHeight/16)/5;
   
-  currentLift.free = false;
-  currentLift.headedTo = toFloor;
   currentLift.liftAt = height;
   var t1 = (currentLift.liftAt - currentLift.headedTo);
   if(t1 < 0){
@@ -169,7 +166,7 @@ function assignLift(lift,toFloor){
   
   doorMovement(width,liftDoor); 
   console.log("free status after door movement",currentLift.free);
-
+  
   if(currentLift.free === false){
     setTimeout(()=>{
       let moveMargin = (toFloor)*5;
@@ -181,6 +178,9 @@ function assignLift(lift,toFloor){
         lift.liftAt = currentLift.headedTo;
         lift.headedTo = 0;
         console.log("lift data on reaching destination",lift);
+        // calledAt.shift();
+        // wipLift.shift();
+        // console.log("finally wiplIft aisa hai",wipLift)
       },time*2*1000);
     },3500);
   }   
