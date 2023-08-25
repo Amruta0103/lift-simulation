@@ -13,11 +13,7 @@ let flArr = [];
 let lftArr = [];
 let calledAt = [];
 let wipLift = [];
-let reachedLift = [];
-let liftsAt = [];
-let floorLevel, buttonUp, buttonDown, currentLift, time;
-let currentFloor;
-let cFlr = 0;
+let floorLevel, buttonUp, buttonDown, currentLift, time, currentFloor, available, liftIsHere;
 
 floorsVal.addEventListener('input',(e) => {
   flVal = (e.target.value);
@@ -28,28 +24,32 @@ liftsVal.addEventListener('input',(f) => {
 })
 
 submitBtn.addEventListener('click',() => {
-  for (var i=0; i< flVal ; i++){
-    let j = {
-      flId: i+1,
+  if(flVal>lftVal){
+    for (var i=0; i< flVal ; i++){
+      let j = {
+        flId: i+1,
+      }
+      flArr.push(j);
     }
-    flArr.push(j);
+  
+    for (var i=0; i<lftVal; i++){
+      let j = {
+        lftId:i+1,
+        free: true,
+        liftAt : 1,
+        headedTo: 1,
+      }
+      lftArr.push(j);
+    } 
+    createFloors(flArr);
+    createLifts(lftArr);
+    allLifts.style.height = `${5*flVal}rem`;
+    form.style.display = 'none';
+    backBtn.style.display = 'block';
+  }else{
+    alert("Number of lifts needs to be less than the number of floors")
   }
 
-  for (var i=0; i<lftVal; i++){
-    let j = {
-      lftId:i+1,
-      free: true,
-      liftAt : 1,
-      headedTo: 1,
-    }
-    lftArr.push(j);
-  } 
-
-  createFloors(flArr);
-  createLifts(lftArr);
-  allLifts.style.height = `${5*flVal}rem`;
-  form.style.display = 'none';
-  backBtn.style.display = 'block';
 })
 
 backBtn.addEventListener('click',()=>{
@@ -86,7 +86,7 @@ function createFloors(arr){
     buttonUp.setAttribute("name","Up")
     buttonUp.setAttribute("value",`${level.flId}`)
     buttonUp.addEventListener('click',()=>getData(level.flId))
-    buttonUp.textContent = ("Up"+level.flId);
+    buttonUp.textContent = ("🔼");
     if(level.flId < flVal){
       buttonBoard.appendChild(buttonUp);
     }
@@ -97,7 +97,7 @@ function createFloors(arr){
     buttonDown.setAttribute("name","Down");
     buttonDown.setAttribute("value",`${level.flId}`)
     buttonDown.addEventListener('click',()=>getData(level.flId))
-    buttonDown.textContent = ("Down"+level.flId);
+    buttonDown.textContent = ("🔽");
     if(level.flId > 1){
       buttonBoard.appendChild(buttonDown);
     }
@@ -131,19 +131,30 @@ function getData(toFloor) {
 }
 
 function managingArrays(calledAt){
+  console.log("line 130 ::", calledAt);
   wipLift.push(lftArr)
-  let available = wipLift[0].filter(lift=> lift.free === true);
-  let liftIsHere = available.find(lift => lift.liftAt === calledAt[0]);
-  if(liftIsHere){
-    console.log("Lift exists at the floor",liftIsHere);
-  }
-  let nearestLift = nearestLiftFunc(available,calledAt[0]);
-  if(nearestLift){
-    nearestLift.free = false;
-    nearestLift.headedTo = calledAt[0];
-    assignLift(nearestLift,calledAt[0]);
-    calledAt.shift();
-  }
+  var toBeAvailable = setInterval(()=>{
+    if(wipLift[0].length > 0){
+      available = wipLift[0].filter(lift=> lift.free === true);
+      console.log(available);
+      liftIsHere = available.find(lift => lift.liftAt === calledAt[0]);
+      if(liftIsHere){
+        alert("Lift exists at the floor",liftIsHere);
+      }
+      if(calledAt[0] !== calledAt[1]){
+        for(a=0; a<calledAt.length; a++){
+          let nearestLift = nearestLiftFunc(available,calledAt[a]);
+          if(nearestLift){
+            nearestLift.free = false;
+            nearestLift.headedTo = calledAt[a];
+            assignLift(nearestLift,calledAt[0]);
+          }
+        }
+      }
+      calledAt.shift()
+    }
+    clearInterval(toBeAvailable);
+  },1000)
 }
       
 function assignLift(lift,toFloor){
