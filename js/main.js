@@ -1,11 +1,10 @@
 const form = document.getElementById('form');
-const floorsVal = document.getElementById('floorsVal');
-const liftsVal = document.getElementById('liftsVal');
 const submitBtn = document.getElementById('submitBtn');
 const backBtn = document.getElementById('backBtn');
 const display = document.getElementById('display');
 const allLevel = document.getElementById('allLevelsDiv');
 const allLifts = document.getElementById('allLiftsDiv');
+var inputs = document.getElementsByClassName("input");
 
 let flVal;
 let lftVal;
@@ -15,36 +14,22 @@ let calledAt = [];
 let wipLift = [];
 let floorLevel, buttonUp, buttonDown, currentLift, time, currentFloor, available, liftIsHere;
 let validInp = false;
-floorsVal.addEventListener('input',(e) => {
-  flVal = parseInt(e.target.value);
-  console.log("flVal",flVal)
-})
 
-liftsVal.addEventListener('input',(f) => {
-  lftVal = parseInt(f.target.value);
-  console.log("lftVal",lftVal)
-})
-function validateInputs(fl,lft){
-  console.log("28 ::","fl :",fl,"lft",lft);
-  // console.log(parseInt(fl),parseInt(lft));
-  if(fl > lft){
-    alert("No. of Floors has to be more than no. of Lifts")
-  }else{
-    console.log("fl:",fl,"lft:",lft);
-    validInp = true;
-    return floorsVal.value = fl, liftsVal.value = lft;
-  }
-}
+
 submitBtn.addEventListener('click',() => {
-  console.log(validateInputs(floorsVal.value,liftsVal.value));
-  if(validInp === true){
-    for (var i=0; i< flVal ; i++){
+  let liftsVal = document.querySelector("#liftsVal").value;
+  let floorsVal = document.querySelector("#floorsVal").value;
+  flVal = parseInt(floorsVal);
+  lftVal = parseInt(liftsVal);
+  console.log("flVal",flVal,"lftVal",lftVal);
+  if(flVal > lftVal){
+    for (var i=0; i< floorsVal ; i++){
       let j = {
         flId: i+1,
       }
       flArr.push(j);
     }
-    for (var i=0; i<lftVal; i++){
+    for (var i=0; i<liftsVal; i++){
       let j = {
         lftId:i+1,
         free: true,
@@ -59,6 +44,7 @@ submitBtn.addEventListener('click',() => {
     form.style.display = 'none';
     backBtn.style.display = 'block';
   }else{
+    alert("No. of floors has to be greater than no. of lifts");
     alert("Re-enter input values");
   }
 })
@@ -72,8 +58,8 @@ backBtn.addEventListener('click',()=>{
   lftArr.splice(0,lftVal);
   calledAt.splice(0,calledAt.length);
   wipLift.splice(0,wipLift.length);
-  liftsVal.value = Number;
-  floorsVal.value = Number;
+  for (var i=0;i<inputs.length;i++) {
+    inputs[i].value = "0";}
 })
 
 function createFloors(arr){
@@ -177,6 +163,9 @@ function assignLift(lift,toFloor){
   let liftBoxId = `${'liftBox'+currentLift.lftId}`;
   var liftBox = document.getElementById(liftBoxId);
   let height = (liftBox.clientHeight/16)/5;
+  let liftDoorId = `${'liftDoor'+currentLift.lftId}`;
+  var liftDoor = document.getElementById(liftDoorId);
+  let width = (liftDoor.clientWidth/16);
   
   currentLift.liftAt = height;
   var t1 = (currentLift.liftAt - currentLift.headedTo);
@@ -185,9 +174,6 @@ function assignLift(lift,toFloor){
   }
   time=t1; 
   
-  let liftDoorId = `${'liftDoor'+currentLift.lftId}`;
-  var liftDoor = document.getElementById(liftDoorId);
-  let width = (liftDoor.clientWidth/16);
   
   doorMovement(width,liftDoor); 
   

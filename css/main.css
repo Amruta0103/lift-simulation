@@ -50,9 +50,15 @@ body {
   display:none;
 }
 #display{
-  display: block;
-  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  width: 100%;
   margin: auto;
+  position: relative;
+}
+.sibs{
+  width: 90%;
   position: relative;
 }
 #allLevelsDiv{
@@ -113,11 +119,12 @@ body {
   display: flex;
   position: absolute;
   bottom: 0rem;
-  margin: 0rem 4rem;
+  left: 4.5rem;
+  right: 4.5rem;
   align-items: end;
   overflow-x: unset;
   overflow-y: unset;
-  width: 80%;
+  width: auto;
 }
 .liftBox{
   height: 5rem;
@@ -128,7 +135,7 @@ body {
 }
 .lift{
   height: 4rem;
-  width: 2rem;
+  min-width: 2rem;
   margin: 1rem 0.5rem 0rem;
   border: 0.5px solid black;
   border-radius: 0.5rem;
