@@ -14,24 +14,36 @@ let lftArr = [];
 let calledAt = [];
 let wipLift = [];
 let floorLevel, buttonUp, buttonDown, currentLift, time, currentFloor, available, liftIsHere;
-
+let validInp = false;
 floorsVal.addEventListener('input',(e) => {
-  flVal = (e.target.value);
+  flVal = parseInt(e.target.value);
+  console.log("flVal",flVal)
 })
 
 liftsVal.addEventListener('input',(f) => {
-  lftVal = (f.target.value);
+  lftVal = parseInt(f.target.value);
+  console.log("lftVal",lftVal)
 })
-
+function validateInputs(fl,lft){
+  console.log("28 ::","fl :",fl,"lft",lft);
+  // console.log(parseInt(fl),parseInt(lft));
+  if(fl > lft){
+    alert("No. of Floors has to be more than no. of Lifts")
+  }else{
+    console.log("fl:",fl,"lft:",lft);
+    validInp = true;
+    return floorsVal.value = fl, liftsVal.value = lft;
+  }
+}
 submitBtn.addEventListener('click',() => {
-  if(flVal>lftVal){
+  console.log(validateInputs(floorsVal.value,liftsVal.value));
+  if(validInp === true){
     for (var i=0; i< flVal ; i++){
       let j = {
         flId: i+1,
       }
       flArr.push(j);
     }
-  
     for (var i=0; i<lftVal; i++){
       let j = {
         lftId:i+1,
@@ -47,9 +59,8 @@ submitBtn.addEventListener('click',() => {
     form.style.display = 'none';
     backBtn.style.display = 'block';
   }else{
-    alert("Number of lifts needs to be less than the number of floors")
+    alert("Re-enter input values");
   }
-
 })
 
 backBtn.addEventListener('click',()=>{
@@ -61,8 +72,8 @@ backBtn.addEventListener('click',()=>{
   lftArr.splice(0,lftVal);
   calledAt.splice(0,calledAt.length);
   wipLift.splice(0,wipLift.length);
-  liftsVal.value = '';
-  floorsVal.value = '';
+  liftsVal.value = Number;
+  floorsVal.value = Number;
 })
 
 function createFloors(arr){
@@ -105,6 +116,12 @@ function createFloors(arr){
 }
 
 function createLifts(tempArr){
+  console.log("123 ::",tempArr.length);
+  if(tempArr.length > 20){
+    allLifts.style.overflowX = 'auto';
+    allLifts.style.overflowY = 'hidden';
+    allLifts.style.bottom = '-1rem';
+  }
   tempArr.forEach((lft)=>{
     let liftBox = document.createElement('div');
     liftBox.setAttribute("class","liftBox");
@@ -120,9 +137,7 @@ function createLifts(tempArr){
     liftDoor.setAttribute("class","liftDoor");
     liftDoor.setAttribute("id",`${"liftDoor"+lft.lftId}`);
     lift.appendChild(liftDoor);
-
   })
-  
 }
 
 function getData(toFloor) {
@@ -203,7 +218,7 @@ function doorMovement(width,door){
   },1000)
   setTimeout(()=>{
     if(width = 0.5){
-      door.style.width = width = `${2.5}rem`;
+      door.style.width = width = `${2}rem`;
       door.style.transition = `width 2.5s ease`;
       width = width.slice(0,-3);
       return width;
