@@ -168,7 +168,7 @@ body {
     font-size: 1.5rem;
   }
   #allLiftsDiv{
-    bottom: 0rem;
+    bottom: 0rem !important;
     overflow-x: unset;
     overflow-y: unset;
     width: auto;
