@@ -35,6 +35,13 @@ body {
   text-align: center;
   margin: auto 1rem;
 }
+#msg {
+  height: 3rem;
+  width: 20%;
+  font-size: 16px;
+  color: red;
+  border: 1px solid black;
+}
 #submitBtn {
   border: 1px solid transparent;
   border-radius: 2rem;
@@ -57,7 +64,7 @@ body {
   margin: auto;
   position: relative;
 }
-.sibs{
+#sibs{
   width: 90%;
   position: relative;
 }
@@ -117,14 +124,14 @@ body {
 }
 #allLiftsDiv{
   display: flex;
+  margin: auto 4.5rem;
   position: absolute;
   bottom: 0rem;
-  left: 4.5rem;
-  right: 4.5rem;
+  /* left: 4.5rem; */
+  /* right: 4.5rem; */
   align-items: end;
-  overflow-x: unset;
-  overflow-y: unset;
-  width: auto;
+  justify-content: space-evenly;
+  width: 85%;
 }
 .liftBox{
   height: 5rem;
@@ -169,8 +176,7 @@ body {
   }
   #allLiftsDiv{
     bottom: 0rem !important;
-    overflow-x: unset;
-    overflow-y: unset;
-    width: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 }

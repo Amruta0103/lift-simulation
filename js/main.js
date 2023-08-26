@@ -4,6 +4,7 @@ const backBtn = document.getElementById('backBtn');
 const display = document.getElementById('display');
 const allLevel = document.getElementById('allLevelsDiv');
 const allLifts = document.getElementById('allLiftsDiv');
+const sibs = document.getElementById("sibs");
 var inputs = document.getElementsByClassName('input');
 
 let flVal;
@@ -15,14 +16,27 @@ let wipLift = [];
 let floorLevel, buttonUp, buttonDown, currentLift, time, currentFloor, available, liftIsHere;
 let validInp = false;
 
-
+function checkInput(flVal,lftVal){
+  if(flVal && lftVal ){
+    if(1<flVal){
+      if(0 < lftVal < 21){
+        return lftVal, flVal, validInp = true;
+      }
+    }else{
+      alert("No. of floors cannot be less than 2");
+    }
+  }else{
+    alert("Please input the values");
+  }
+  
+}
 submitBtn.addEventListener('click',() => {
   let liftsVal = document.querySelector("#liftsVal").value;
   let floorsVal = document.querySelector("#floorsVal").value;
   flVal = parseInt(floorsVal);
   lftVal = parseInt(liftsVal);
-  console.log("flVal",flVal,"lftVal",lftVal);
-  if(flVal > lftVal){
+  checkInput(flVal,lftVal);
+  if(validInp === true){
     for (var i=0; i< floorsVal ; i++){
       let j = {
         flId: i+1,
@@ -43,28 +57,24 @@ submitBtn.addEventListener('click',() => {
     allLifts.style.height = `${5*flVal}rem`;
     form.style.display = 'none';
     backBtn.style.display = 'block';
-  }else{
-    alert("No. of floors has to be greater than no. of lifts");
-    alert("Re-enter input values");
+    console.log(flArr,flVal,"::",lftArr,lftVal);
   }
-  
 })
 
 backBtn.addEventListener('click',()=>{
   allLevel.replaceChildren();
   allLifts.replaceChildren();
-  allLifts.style.display = 'none';
+  allLifts.style.height = '0rem';
+  // sibs.style.display = 'none';
+  // allLifts.style.display = 'none';
   backBtn.style.display = 'none';
   form.style.display = 'flex';
-  flArr.splice(0, flVal);
-  lftArr.splice(0,lftVal);
-  calledAt.splice(0,calledAt.length);
-  wipLift.splice(0,wipLift.length);
-  // for (var i=0;i<inputs.length;i++) {
-  //   inputs[i].value = "";
-  // }
-  document.querySelector("#liftsVal").value = '-';
-  document.querySelector("#floorsVal").value = '-';
+  document.querySelector("#liftsVal").value = 0;
+  document.querySelector("#floorsVal").value = 0;
+  flArr = [];
+  lftArr = [];
+  calledAt = [];
+  wipLift = [] ;
 })
 
 function createFloors(arr){
@@ -107,13 +117,6 @@ function createFloors(arr){
 }
 
 function createLifts(tempArr){
-  let totalWidth = (allLifts.clientWidth/16);
-  console.log(tempArr.length*2.5, totalWidth);
-  if(tempArr.length*2.5 > totalWidth){
-    allLifts.style.overflowX = 'auto';
-    allLifts.style.overflowY = 'hidden';
-    allLifts.style.bottom = '-1rem';
-  }
   tempArr.forEach((lft)=>{
     let liftBox = document.createElement('div');
     liftBox.setAttribute("class","liftBox");
@@ -130,6 +133,8 @@ function createLifts(tempArr){
     liftDoor.setAttribute("id",`${"liftDoor"+lft.lftId}`);
     lift.appendChild(liftDoor);
   })
+  let totalWidth = (allLifts.clientWidth);
+  console.log(tempArr.length*2.5, totalWidth);
 }
 
 function getData(toFloor) {
