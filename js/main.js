@@ -4,7 +4,7 @@ const backBtn = document.getElementById('backBtn');
 const display = document.getElementById('display');
 const allLevel = document.getElementById('allLevelsDiv');
 const allLifts = document.getElementById('allLiftsDiv');
-var inputs = document.getElementsByClassName("input");
+var inputs = document.getElementsByClassName('input');
 
 let flVal;
 let lftVal;
@@ -47,19 +47,24 @@ submitBtn.addEventListener('click',() => {
     alert("No. of floors has to be greater than no. of lifts");
     alert("Re-enter input values");
   }
+  
 })
 
 backBtn.addEventListener('click',()=>{
   allLevel.replaceChildren();
   allLifts.replaceChildren();
+  allLifts.style.display = 'none';
   backBtn.style.display = 'none';
   form.style.display = 'flex';
   flArr.splice(0, flVal);
   lftArr.splice(0,lftVal);
   calledAt.splice(0,calledAt.length);
   wipLift.splice(0,wipLift.length);
-  for (var i=0;i<inputs.length;i++) {
-    inputs[i].value = "0";}
+  // for (var i=0;i<inputs.length;i++) {
+  //   inputs[i].value = "";
+  // }
+  document.querySelector("#liftsVal").value = '-';
+  document.querySelector("#floorsVal").value = '-';
 })
 
 function createFloors(arr){
@@ -102,8 +107,9 @@ function createFloors(arr){
 }
 
 function createLifts(tempArr){
-  console.log("123 ::",tempArr.length);
-  if(tempArr.length > 20){
+  let totalWidth = (allLifts.clientWidth/16);
+  console.log(tempArr.length*2.5, totalWidth);
+  if(tempArr.length*2.5 > totalWidth){
     allLifts.style.overflowX = 'auto';
     allLifts.style.overflowY = 'hidden';
     allLifts.style.bottom = '-1rem';
@@ -137,7 +143,6 @@ function managingArrays(calledAt){
   var toBeAvailable = setInterval(()=>{
     if(wipLift[0].length > 0){
       available = wipLift[0].filter(lift=> lift.free === true);
-      console.log(available);
       liftIsHere = available.find(lift => lift.liftAt === calledAt[0]);
       if(liftIsHere){
         alert("Lift exists at the floor",liftIsHere);

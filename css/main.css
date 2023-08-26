@@ -167,4 +167,10 @@ body {
     height: 3.5rem;
     font-size: 1.5rem;
   }
+  #allLiftsDiv{
+    bottom: 0rem;
+    overflow-x: unset;
+    overflow-y: unset;
+    width: auto;
+  }
 }
