@@ -67,7 +67,7 @@ submitBtn.addEventListener('click',() => {
     allLifts.style.height = `${5*flVal}rem`;
     form.style.display = 'none';
     backBtn.style.display = 'block';
-    console.log(flArr,flVal,"::",lftArr,lftVal);
+    // console.log(flArr,flVal,"::",lftArr,lftVal);
   }
 })
 
@@ -75,8 +75,6 @@ backBtn.addEventListener('click',()=>{
   allLevel.replaceChildren();
   allLifts.replaceChildren();
   allLifts.style.height = '0rem';
-  // sibs.style.display = 'none';
-  // allLifts.style.display = 'none';
   backBtn.style.display = 'none';
   form.style.display = 'flex';
   document.querySelector("#liftsVal").value = 0;
@@ -144,7 +142,7 @@ function createLifts(tempArr){
     lift.appendChild(liftDoor);
   })
   let totalWidth = (allLifts.clientWidth);
-  console.log(tempArr.length*2.5, totalWidth);
+  // console.log(tempArr.length*2.5, totalWidth);
 }
 
 function getData(toFloor) {
@@ -153,42 +151,37 @@ function getData(toFloor) {
 }
 
 function managingArrays(calledAt){
-  console.log("line 130 ::", calledAt);
   wipLift.push(lftArr)
-  available = wipLift[0].filter(lift=> lift.free === true);
-  liftIsHere = available.find(lift => lift.liftAt === calledAt[0]);
-  if(liftIsHere){
-    alert("Lift exists at the floor",liftIsHere);
-  }
   var toBeAvailable = setInterval(()=>{
-    // if(available.length > 0){
-      if(calledAt[0] !== calledAt[1]){
-        for(a=0; a<calledAt.length; a++){
-          let nearestLift = nearestLiftFunc(available,calledAt[a]);
-          if(nearestLift){
-            nearestLift.free = false;
-            nearestLift.headedTo = calledAt[a];
-            assignLift(nearestLift,calledAt[0]);
-          }
+    available = wipLift[0].filter(lift=> lift.free === true);
+    liftIsHere = available.find(lift => lift.liftAt === calledAt[0]);
+    if(liftIsHere){
+      alert("Lift exists at the floor",liftIsHere);
+    }else{
+      for(a=0; a<calledAt.length; a++){
+        let nearestLift = nearestLiftFunc(available,calledAt[a]);
+        if(nearestLift){
+          nearestLift.free = false;
+          nearestLift.headedTo = calledAt[a];
+          assignLift(nearestLift,calledAt[0]);
+          calledAt.shift()
         }
       }
-      calledAt.shift()
-    // }
+    }
     clearInterval(toBeAvailable);
   },1000)
 }
       
 function assignLift(lift,toFloor){
-  let currentLift = lift;
-  let liftBoxId = `${'liftBox'+currentLift.lftId}`;
+  let liftBoxId = `${'liftBox'+lift.lftId}`;
   var liftBox = document.getElementById(liftBoxId);
   let height = (liftBox.clientHeight/16)/5;
-  let liftDoorId = `${'liftDoor'+currentLift.lftId}`;
+  let liftDoorId = `${'liftDoor'+lift.lftId}`;
   var liftDoor = document.getElementById(liftDoorId);
   let width = (liftDoor.clientWidth/16);
   
-  currentLift.liftAt = height;
-  var t1 = (currentLift.liftAt - currentLift.headedTo);
+  lift.liftAt = height;
+  var t1 = (lift.liftAt - lift.headedTo);
   if(t1 < 0){
     t1=t1*(-1);
   }
@@ -197,7 +190,7 @@ function assignLift(lift,toFloor){
   
   doorMovement(width,liftDoor); 
   
-  if(currentLift.free === false){
+  if(lift.free === false){
     setTimeout(()=>{
       let moveMargin = (toFloor)*5;
       liftBox.style.height = `${moveMargin}rem`;
@@ -205,7 +198,7 @@ function assignLift(lift,toFloor){
       setTimeout(()=>{
         doorMovement(width,liftDoor);
         lift.free = true;
-        lift.liftAt = currentLift.headedTo;
+        lift.liftAt = toFloor;
         lift.headedTo = 0;
         wipLift.shift();
       },time*2*1000);
@@ -233,21 +226,16 @@ function doorMovement(width,door){
 }
 
 function nearestLiftFunc(arr, calledAt){
-  // if(arr.length>0){
-    let nearest = arr[0];
-    let minDiff = Math.abs(calledAt - nearest.liftAt);
-  
-    for( let i=1; i< arr.length; i++){
-      let current = arr[i];
-      let currentDif = Math.abs(calledAt - current.liftAt);
-      if(currentDif < minDiff){
-        nearest = current;
-        minDiff = currentDif;
-      }
+  let nearest = arr[0];
+  let minDiff = Math.abs(calledAt - nearest.liftAt);
+
+  for( let i=1; i< arr.length; i++){
+    let current = arr[i];
+    let currentDif = Math.abs(calledAt - current.liftAt);
+    if(currentDif < minDiff){
+      nearest = current;
+      minDiff = currentDif;
     }
-    return nearest;
-  // }else{
-    // console.log("lift will be here soon");
-  // }
-  // nearestLiftFunc(arr,calledAt);
+  }
+  return nearest; 
 }
