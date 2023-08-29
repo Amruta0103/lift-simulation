@@ -18,8 +18,8 @@ let validInp = false;
 
 function checkInput(flVal,lftVal){
   if(flVal && lftVal ){
-    if(1<flVal){
-      if(0 < lftVal){
+    if(flVal > 1){
+      if(lftVal > 0){
         if(lftVal > 21){
           alert("Max. limit for lifts is 20")
         }else{
@@ -46,7 +46,7 @@ submitBtn.addEventListener('click',() => {
   flVal = parseInt(floorsVal);
   lftVal = parseInt(liftsVal);
   checkInput(flVal,lftVal);
-  if(validInp === true){
+  if(flVal > 1 && lftVal > 0 && validInp === true){
     for (var i=1; i<=floorsVal ; i++){
       let j = {
         flId: i,
