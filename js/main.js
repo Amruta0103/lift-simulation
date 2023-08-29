@@ -36,7 +36,7 @@ function checkInput(flVal,lftVal){
       alert("No. of floors cannot be less than 2");
     }
   }else{
-    alert("Please input the values");
+    return alert("Please input the values");
   }
   
 }
@@ -47,15 +47,15 @@ submitBtn.addEventListener('click',() => {
   lftVal = parseInt(liftsVal);
   checkInput(flVal,lftVal);
   if(validInp === true){
-    for (var i=0; i< floorsVal ; i++){
+    for (var i=1; i<=floorsVal ; i++){
       let j = {
-        flId: i+1,
+        flId: i,
       }
       flArr.push(j);
     }
-    for (var i=0; i<liftsVal; i++){
+    for (var i=1; i<=liftsVal; i++){
       let j = {
-        lftId:i+1,
+        lftId:i,
         free: true,
         liftAt : 1,
         headedTo: 1,
@@ -67,7 +67,6 @@ submitBtn.addEventListener('click',() => {
     allLifts.style.height = `${5*flVal}rem`;
     form.style.display = 'none';
     backBtn.style.display = 'block';
-    // console.log(flArr,flVal,"::",lftArr,lftVal);
   }
 })
 
@@ -139,6 +138,7 @@ function createLifts(tempArr){
     let liftDoor = document.createElement('div');
     liftDoor.setAttribute("class","liftDoor");
     liftDoor.setAttribute("id",`${"liftDoor"+lft.lftId}`);
+    liftDoor.innerHTML = ("L"+lft.lftId);
     lift.appendChild(liftDoor);
   })
   let totalWidth = (allLifts.clientWidth);

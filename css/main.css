@@ -124,11 +124,10 @@ body {
 }
 #allLiftsDiv{
   display: flex;
-  margin: auto 4.5rem;
+  margin: auto 3rem;
   position: absolute;
   bottom: 0rem;
-  /* left: 4.5rem; */
-  /* right: 4.5rem; */
+  left: 4.5rem;
   align-items: end;
   justify-content: space-evenly;
   width: 85%;
