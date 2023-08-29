@@ -26,7 +26,7 @@ function checkInput(flVal,lftVal){
           if(lftVal < flVal ){
             return lftVal, flVal, validInp = true;
           }else{
-            alert("No. of lifts cannot be more than lifts");
+            alert("No. of lifts cannot be more than or equal to no. of lifts");
           }
         }
       }else{
@@ -138,7 +138,7 @@ function createLifts(tempArr){
     let liftDoor = document.createElement('div');
     liftDoor.setAttribute("class","liftDoor");
     liftDoor.setAttribute("id",`${"liftDoor"+lft.lftId}`);
-    liftDoor.innerHTML = ("L-"+lft.lftId);
+    liftDoor.innerHTML = ("L"+lft.lftId);
     lift.appendChild(liftDoor);
   })
   let totalWidth = (allLifts.clientWidth);
