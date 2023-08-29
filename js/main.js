@@ -138,7 +138,7 @@ function createLifts(tempArr){
     let liftDoor = document.createElement('div');
     liftDoor.setAttribute("class","liftDoor");
     liftDoor.setAttribute("id",`${"liftDoor"+lft.lftId}`);
-    liftDoor.innerHTML = ("L"+lft.lftId);
+    liftDoor.innerHTML = ("L-"+lft.lftId);
     lift.appendChild(liftDoor);
   })
   let totalWidth = (allLifts.clientWidth);
