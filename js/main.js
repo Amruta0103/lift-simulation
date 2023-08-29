@@ -24,7 +24,8 @@ function checkInput(flVal,lftVal){
           alert("Max. limit for lifts is 20")
         }else{
           if(lftVal < flVal ){
-            return lftVal, flVal, validInp = true;
+            // lftVal, flVal, validInp = true;
+            createView(flVal, lftVal);
           }else{
             alert("No. of lifts cannot be more than or equal to no. of lifts");
           }
@@ -40,34 +41,35 @@ function checkInput(flVal,lftVal){
   }
   
 }
+function createView(floorsVal,liftsVal){
+  for (var i=1; i<=floorsVal ; i++){
+    let j = {
+      flId: i,
+    }
+    flArr.push(j);
+  }
+  for (var i=1; i<=liftsVal; i++){
+    let j = {
+      lftId:i,
+      free: true,
+      liftAt : 1,
+      headedTo: 1,
+    }
+    lftArr.push(j);
+  } 
+  createFloors(flArr);
+  createLifts(lftArr);
+  allLifts.style.height = `${5*flVal}rem`;
+  form.style.display = 'none';
+  backBtn.style.display = 'block';
+}
+
 submitBtn.addEventListener('click',() => {
   let liftsVal = document.querySelector("#liftsVal").value;
   let floorsVal = document.querySelector("#floorsVal").value;
   flVal = parseInt(floorsVal);
   lftVal = parseInt(liftsVal);
   checkInput(flVal,lftVal);
-  if(flVal > 1 && lftVal > 0 && validInp === true){
-    for (var i=1; i<=floorsVal ; i++){
-      let j = {
-        flId: i,
-      }
-      flArr.push(j);
-    }
-    for (var i=1; i<=liftsVal; i++){
-      let j = {
-        lftId:i,
-        free: true,
-        liftAt : 1,
-        headedTo: 1,
-      }
-      lftArr.push(j);
-    } 
-    createFloors(flArr);
-    createLifts(lftArr);
-    allLifts.style.height = `${5*flVal}rem`;
-    form.style.display = 'none';
-    backBtn.style.display = 'block';
-  }
 })
 
 backBtn.addEventListener('click',()=>{

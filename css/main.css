@@ -124,7 +124,7 @@ body {
 }
 #allLiftsDiv{
   display: flex;
-  margin: auto 3rem;
+  margin: auto 0rem;
   position: absolute;
   bottom: 0rem;
   left: 4.5rem;
